@@ -1,6 +1,5 @@
 package com.videohost.videohost_server.security.jwt;
 
-
 import com.videohost.videohost_server.model.Role;
 import com.videohost.videohost_server.security.JwtUserDetailsService;
 import io.jsonwebtoken.*;
@@ -71,7 +70,7 @@ public class JwtTokenProvider {
     public String resolveToken(HttpServletRequest req) {
         String bearerToken = req.getHeader("Authorization");
         if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
-            return bearerToken.substring(7, bearerToken.length());
+            return bearerToken.substring(7);
         }
         return null;
     }

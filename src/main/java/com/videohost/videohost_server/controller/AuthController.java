@@ -18,8 +18,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.PostConstruct;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 @RestController
 public class AuthController {
@@ -47,7 +45,7 @@ public class AuthController {
     }
 
     @PostMapping(value = "/login", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity login(@RequestBody AuthenticationRequestCommand requestDto) {
+    public ResponseEntity<String> login(@RequestBody AuthenticationRequestCommand requestDto) {
         try {
             String email = requestDto.getEmail();
             User user = userService.findByEmail(email);
@@ -56,10 +54,7 @@ public class AuthController {
                 throw new UsernameNotFoundException("wrong data please try again");
             }
             String token = jwtTokenProvider.createToken(email, user.getRoles());
-            Map<Object, Object> response = new HashMap<>();
-            response.put("username", email);
-            response.put("token", token);
-            return ResponseEntity.ok(response);
+            return ResponseEntity.ok("Bearer " + token);
         } catch (AuthenticationException e) {
             throw new BadCredentialsException("Invalid username or password");
         }
